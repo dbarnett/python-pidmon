@@ -1,0 +1,5 @@
+pidmon
+======
+pidmon is a collection of hacks to monitor running processes for activities,
+detecting when processes are created and destroyed and helping to wait for
+activity on a certain PID.
