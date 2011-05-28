@@ -1,3 +1,4 @@
 *.pyc
 .*.sw[a-p]
 /*.egg-info/
+*.egg/
