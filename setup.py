@@ -19,6 +19,8 @@ setup(
     tests_require=['nose'],
     url = "http://github.com/dbarnett/python-pidmon",
     entry_points = {
-        "console_scripts": []
+        "console_scripts": [
+            "pidmon = pidmon.__main__"
+        ]
     }
 )
