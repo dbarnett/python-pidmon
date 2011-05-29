@@ -7,7 +7,7 @@ setup(
     version = "0.01",
     packages=find_packages(),
     dependency_links = [],
-    install_requires=(['win32com'] if os.name == 'nt' else []),
+    install_requires=(['pywin32'] if os.name == 'nt' else []),
     extras_require={},
     package_data = {},
     author="David Barnett",
