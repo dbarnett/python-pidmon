@@ -21,8 +21,8 @@ class TestListProcesses(unittest.TestCase):
     def test_child_in_processes(self):
         """list_processes() should contain new process's PID"""
         running_pids_pre = pidmon.list_processes()
+        p = DummyProcess()
         try:
-            p = DummyProcess()
             p.start()
             while p.process.pid is None:        # make sure it's started
                 pass
@@ -69,8 +69,8 @@ class TestWaitPID(unittest.TestCase):
 
     def test_childpid(self, delay=.05):
         """Handles direct child (nothing os.waitpid can't do)"""
+        p = DummyProcess()
         try:
-            p = DummyProcess()
             p.start()
             self._stop_process_after(p, delay)
             t0 = time.time()
