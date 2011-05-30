@@ -12,7 +12,7 @@ from .monitor import PidMonitor
 
 logger = logging.getLogger(__name__)
 
-def waitpid(pid, recursive=False, sleep_time=.1):
+def waitpid(pid, recursive=False, graft_func=None, sleep_time=.1):
     proc = Process(pid)
     wait_procs = []
     last_procs = []
@@ -32,7 +32,8 @@ def waitpid(pid, recursive=False, sleep_time=.1):
         if activity.started_procs:
             descendants = (proc.get_descendants() if recursive else [])
             for p in activity.started_procs:
-                if p in descendants:
+                if (p in descendants or 
+                        graft_func is not None and graft_func(p)):
                     wait_procs.append(p)
                     new_wait_procs.append(p)
         if len(wait_procs) == 0:
