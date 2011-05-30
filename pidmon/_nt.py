@@ -1,5 +1,7 @@
 import win32com.client
 
+from .core import ProcessBase
+
 class WinProcess(ProcessBase):
     def _get_value(self, valname):
         WMI = win32com.client.GetObject('winmgmts:')
