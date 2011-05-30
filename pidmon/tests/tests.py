@@ -44,6 +44,33 @@ class TestListProcesses(unittest.TestCase):
         running_pids_post = [p.pid for p in pidmon.list_processes()]
         assert (p1.process.pid not in running_pids_post)
 
+class TestMonitor(unittest.TestCase):
+    def setUp(self):
+        self.monitor = pidmon.monitor.PidMonitor()
+
+    def tearDown(self):
+        pass
+
+    def test_init(self):
+        activity = self.monitor.poll_procs()
+        self.assertEqual(activity.started_procs, self.monitor.running_procs)
+        self.assertEqual(activity.stopped_procs, [])
+
+    def test_spawn(self):
+        self.monitor.poll_procs()
+        p1 = DummyProcess()
+        try:
+            p1.start()
+            while p1.process.pid is None:        # make sure it's started
+                pass
+            p1_proc = pidmon.Process(p1.process.pid)
+            activity = self.monitor.poll_procs()
+            assert (p1_proc in activity.started_procs), "{} not in {!r}".format(p1_proc, activity.started_procs)
+        finally:
+            p1.stop()
+        activity = self.monitor.poll_procs()
+        assert (p1_proc in activity.stopped_procs), "{} not in {!r}".format(p1_proc, activity.stopped_procs)
+
 class TestWaitPID(unittest.TestCase):
     def setUp(self):
         pass
