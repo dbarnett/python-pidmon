@@ -31,6 +31,7 @@ class WinProcess(ProcessBase):
 
     @property
     def start_time(self):
+        """Returns, e.g., '20110530102249.403200-420'"""
         return self._get_value('CreationDate')
 
 def list_processes():
