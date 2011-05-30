@@ -6,6 +6,16 @@ import time
 import pidmon
 from ._utils import DummyProcess
 
+class TestProcessObj(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_equal(self):
+        self.assertEqual(pidmon.Process(1), pidmon.Process(1))
+
 class TestListProcesses(unittest.TestCase):
     def setUp(self):
         pass
@@ -15,24 +25,24 @@ class TestListProcesses(unittest.TestCase):
 
     def test_self_in_processes(self):
         """list_processes() should contain current python process's PID"""
-        running_pids = pidmon.list_processes()
+        running_pids = [p.pid for p in pidmon.list_processes()]
         assert (os.getpid() in running_pids)
 
     def test_child_in_processes(self):
         """list_processes() should contain new process's PID"""
-        running_pids_pre = pidmon.list_processes()
-        p = DummyProcess()
+        running_pids_pre = [p.pid for p in pidmon.list_processes()]
+        p1 = DummyProcess()
         try:
-            p.start()
-            while p.process.pid is None:        # make sure it's started
+            p1.start()
+            while p1.process.pid is None:        # make sure it's started
                 pass
-            assert (p.process.pid not in running_pids_pre)
-            running_pids = pidmon.list_processes()
-            assert (p.process.pid in running_pids), "{} not in {!r}".format(p.process.pid, running_pids)
+            assert (p1.process.pid not in running_pids_pre)
+            running_pids = [p.pid for p in pidmon.list_processes()]
+            assert (p1.process.pid in running_pids), "{} not in {!r}".format(p1.process.pid, running_pids)
         finally:
-            p.stop()
-        running_pids_post = pidmon.list_processes()
-        assert (p.process.pid not in running_pids_post)
+            p1.stop()
+        running_pids_post = [p.pid for p in pidmon.list_processes()]
+        assert (p1.process.pid not in running_pids_post)
 
 class TestWaitPID(unittest.TestCase):
     def setUp(self):
@@ -52,7 +62,7 @@ class TestWaitPID(unittest.TestCase):
 
     @staticmethod
     def _unused_pid():
-        running_pids = pidmon.list_processes()
+        running_pids = [p.pid for p in pidmon.list_processes()]
         i = 1
         while i in running_pids:
             i += 1
@@ -69,13 +79,13 @@ class TestWaitPID(unittest.TestCase):
 
     def test_childpid(self, delay=.05):
         """Handles direct child (nothing os.waitpid can't do)"""
-        p = DummyProcess()
+        p1 = DummyProcess()
         try:
-            p.start()
-            self._stop_process_after(p, delay)
+            p1.start()
+            self._stop_process_after(p1, delay)
             t0 = time.time()
-            pidmon.waitpid(p.process.pid)
+            pidmon.waitpid(p1.process.pid)
         finally:
-            p.stop()
+            p1.stop()
         t1 = time.time()
         assert (delay < t1 - t0), "died {:.2f}s into {:.2f}s delay".format(t1 - t0, delay)
