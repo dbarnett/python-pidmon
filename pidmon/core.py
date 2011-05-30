@@ -1,4 +1,5 @@
 class ProcessBase(object):
+    """Basic interface for process handles on any given platform"""
     pid = None
     name = None
     command_line = None

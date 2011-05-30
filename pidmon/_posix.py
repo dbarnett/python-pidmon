@@ -12,6 +12,9 @@ def ps(args):
                 yield int(m.group(1))
 
 class PosixProcess(ProcessBase):
+    """Handle to a process running on a POSIX-compliant system
+
+    Looks up attributes by calling 'ps'."""
     def _get_value(self, valname):
         p = subprocess.Popen(['ps', '-p', str(self.pid), '-o', valname+'='], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if p.wait() == 0:

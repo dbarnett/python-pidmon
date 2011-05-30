@@ -3,6 +3,10 @@ import win32com.client
 from .core import ProcessBase
 
 class WinProcess(ProcessBase):
+    """Handle to a process running on MS Windows
+
+    Looks up attributes using win32com.
+    See http://msdn.microsoft.com/en-us/library/aa394372.aspx for details."""
     def _get_value(self, valname):
         WMI = win32com.client.GetObject('winmgmts:')
         for p in WMI.InstancesOf('Win32_Process'):

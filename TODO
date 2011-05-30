@@ -1,1 +1,3 @@
 * add more automated tests
+* optimize to reduce extraneous system calls
+* optimize to use os.waitpid directly when possible

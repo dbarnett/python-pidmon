@@ -1,6 +1,7 @@
 from . import list_processes
 
 class PidActivity(object):
+    """Lists of started and stopped processes during some time period"""
     started_procs = None
     stopped_procs = None
 
@@ -9,6 +10,7 @@ class PidActivity(object):
         self.stopped_procs = stopped_procs
 
 class PidMonitor(object):
+    """Polls for proc-started/proc-stopped events"""
     def __init__(self):
         self.running_procs = []
 
