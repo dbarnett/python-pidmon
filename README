@@ -5,3 +5,23 @@ detecting when processes are created and destroyed and helping to wait for
 activity on a certain PID.
 
 Inspired by discussion on http://stackoverflow.com/questions/6102535/
+
+Examples
+========
+Exploring the process tree:
+
+    >>> p = pidmon.Process(1)
+    >>> p.name
+    'init'
+    >>> p.children
+    [...]
+
+Waiting on processes:
+
+    >>> pidmon.waitpid(5) # doesn't need to be be a child process
+    >>> pidmon.waitpid(10001, recursive=True) # wait for process and any orphaned descendants
+
+You can also catch processes that are started indirectly, e.g. through a
+factory:
+
+    >>> pidmon.waitpid(12345, graft_func=lambda p: p.name == 'gnome-terminal')
