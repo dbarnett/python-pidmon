@@ -1,3 +1,5 @@
-* add more automated tests
 * optimize to reduce extraneous system calls
 * optimize to use os.waitpid directly when possible
+* broaden Linux support (doesn't work w/ busybox's ps, maybe should read /proc
+  directly)
+* performance problems on Windows (WinProcess.children)
